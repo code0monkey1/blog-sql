@@ -1,43 +1,19 @@
 // create an express app with CRUD for blog routes
 import express from 'express';
-import {connectDb} from './src/utils/db.js';
-import Blog from './src/models/blog.model.js';
-
-await connectDb()
+import {connectToDb} from './src/utils/db.js';
+import config from './src/utils/config.js';
+import blogRouter from './src/routes/blog.router.js';
+import userRouter from './src/routes/user.router.js';
+import loginRouter from './src/routes/login.router.js';
 
 const app = express();
 
 app.use(express.json());
 
 // import routes
-
-app.post('/api/blogs',async(req,res,next) => {
-
-    try{
-        // create a new blog
-       const newBlog = await Blog.create(req.body);
-       res.json(newBlog);
-
-    }catch(err){
-        next(err);
-    }
-});
-
-// get all blogs route
-
-app.get('/api/blogs',async(req,res,next) => {
-    try{
-
-        // get all blogs
-       const blogs = await Blog.findAll();
-       res.json(blogs);
-
-    }catch(err){
-        next(err);
-    }
-});
-
-//error handling
+app.use('/api/blogs',blogRouter);
+app.use('/api/users',userRouter);
+app.use('/api/login',loginRouter);
 
 app.use((err, req, res, next) => {
     
@@ -53,9 +29,19 @@ app.use((err, req, res, next) => {
     });
 });
 
+const PORT  = config.PORT || 3001
 
-const PORT  = 3001
+const start=async()=>{
+     //db connection
+     await connectToDb()
+     //server linsten start server
 
-app.listen(PORT,function(){
-    console.log(`Server is running on port ${PORT}`);
-});
+    app.listen(PORT,function(){
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
+
+start();
+
+
+
