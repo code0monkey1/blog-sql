@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { Blog,User } from "../models/index.js";
  
  const postBlog=async(req,res,next) => {
@@ -19,12 +20,27 @@ import { Blog,User } from "../models/index.js";
 
     try{
 
+      // filter as per the search parameters
+      const where={
+
+      }
+
+      if(req.query.search){
+          where[Op.or] = [
+
+                { title: { [Op.iLike]: `%${req.query.search}%` } },
+                { author: { [Op.iLike]: `%${req.query.search}%` } }
+            ];
+      }
+
       // get all blogs
       const blogs = await Blog.findAll({
          include: {
            model: User,
            attributes: ['name']
          },
+         where,
+         order: [['createdAt','DESC']]
       });
 
       res.json(blogs);

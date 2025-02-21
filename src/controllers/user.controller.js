@@ -11,6 +11,7 @@ const postUser = async (req, res, next) => {
     }
 };
 
+
 const getAllUsers = async (req, res, next) => {
     try {
         // get all users
