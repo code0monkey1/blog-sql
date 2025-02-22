@@ -10,7 +10,7 @@ export const sequelize = new Sequelize(
      }
 )
 
-const migrationsConfig = {
+ const migrationsConfig = {
     migrations: {
        glob: 'migrations/*.js',
     },
@@ -32,6 +32,7 @@ export const runMigrations = async () => {
 }
 
 export const rollbackMigration = async () => {
+    await sequelize.authenticate();
     const migrator = new Umzug(migrationsConfig);
     await migrator.down();
 }
@@ -41,9 +42,14 @@ export const connectToDb = async () => {
         await sequelize.authenticate();
         console.log('Connection has been established successfully.');
         // Run migrations
-        console.log('Running migrations...');
-        await runMigrations();
-        console.log('Migrations completed successfully.');
+        if (config.RUN_MIGRATIONS === 'true') {
+            console.log('Running migrations...');
+            await runMigrations();
+            console.log('Migrations completed successfully.');
+      }
+      else{
+        console.log("Skipping migrations");
+      }
     } catch (error) {
         console.error('Database setup failed:', {
             message: error.message,
