@@ -6,13 +6,13 @@ Blog.belongsTo(User);
 User.hasMany(Blog);
 
 
-Blog.sync({
-    alter:true,
-})
+// Blog.sync({
+//     alter:true,
+// })
 
-User.sync({
-    alter:true,
-})
+// User.sync({
+//     alter:true,
+// })
 
 export {
     Blog,
