@@ -6,6 +6,7 @@ import blogRouter from './src/routes/blog.router.js';
 import userRouter from './src/routes/user.router.js';
 import loginRouter from './src/routes/login.router.js';
 import authorRouter from './src/routes/author.router.js';
+import readingListRouter from './src/routes/reading.list.router.js';
 const app = express();
 
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use('/api/blogs',blogRouter);
 app.use('/api/users',userRouter);
 app.use('/api/login',loginRouter);
 app.use('/api/authors',authorRouter);
+app.use('/api/readinglists',readingListRouter);
 
 app.use((err, req, res, next) => {
     

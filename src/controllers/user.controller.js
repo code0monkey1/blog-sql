@@ -16,12 +16,13 @@ const getAllUsers = async (req, res, next) => {
     try {
         // get all users
         const users = await User.findAll({
-            include: {
+            include:[ {
                 model: Blog,
                 attributes:{
                     exclude: ['userId']
                 }
-            }
+            },
+           ]
         });
         res.json(users);
 
@@ -50,8 +51,40 @@ const updateUserByUsername = async (req, res, next) => {
         }
     }
 
+const getUserById = async (req, res, next) => {
+    try {
+        // see if user request has read query
+        const where = {};
+
+        if (req.query.read) {
+            where.read = req.query.read;
+        }
+
+        const user = await User.findByPk(req.params.id, {
+            include: {
+                model: Blog,
+                as: 'readings',
+                attributes:{
+                    exclude: ['userId'],
+                },
+                through: {
+                    attributes: [
+                        'read',
+                        'id'
+                    ],
+                    where
+                }
+            }
+        });
+        res.json(user);
+    } catch (err) {
+        next(err);
+    }
+}
+
 export default {
     postUser,
     getAllUsers,
     updateUserByUsername,
+    getUserById
 }

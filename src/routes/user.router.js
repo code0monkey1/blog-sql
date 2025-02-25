@@ -11,5 +11,6 @@ route.get('/',userController.getAllUsers);
 
 route.put('/:username',userController.updateUserByUsername);
 
+route.get('/:id',userController.getUserById);
 
 export default route;
