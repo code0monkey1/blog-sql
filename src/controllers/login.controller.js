@@ -19,6 +19,11 @@ const login=async(req,res,next)=>{
                 username: user.username,
             };
 
+            // do not let disabled users login
+            if (user.isDisabled) {
+                return res.status(401).json({ message: 'User is disabled' });
+            }
+
             // generate a JWT token
             const token = jwt.sign(tokenInfo, config.JWT_SECRET);
 
