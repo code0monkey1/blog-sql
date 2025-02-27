@@ -1,7 +1,8 @@
 import config from "../utils/config.js";
 import jwt from 'jsonwebtoken';
-import {User} from "../models/index.js";
+import {User, Session} from "../models/index.js";
 import { v4 as uuidv4 } from 'uuid';
+
 const login=async(req,res,next)=>{
 
     try{
@@ -42,6 +43,7 @@ const login=async(req,res,next)=>{
 const logout=async(req,res,next)=>{
     try{
         await Session.destroy({ where: { token: req.token } });
+        res.status(204).end();
     }catch(e){
         next(e);
     }

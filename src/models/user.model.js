@@ -1,19 +1,9 @@
+
 import { Model, DataTypes } from 'sequelize';
-import { sequelize } from '../utils/db.js';
 
-class User extends Model {
-    async disable() {
-        this.disabled = true;
-        await this.save();
-        // Remove all sessions for this user
-        await sequelize.models.session.removeUserSessions(this.id);
-    }
+import {sequelize}  from '../utils/db.js'
 
-    async enable() {
-        this.disabled = false;
-        await this.save();
-    }
-}
+class User extends Model {}
 
 User.init({
     id: {
@@ -21,25 +11,32 @@ User.init({
         primaryKey: true,
         autoIncrement: true
     },
-    username: {
+    username:{
         type: DataTypes.STRING,
-        unique: true,
+        allowNull:false,
+        unique: {
+            msg: "Username already exists"
+        },
+        validate: {
+        isEmail: {
+            msg: "Validation isEmail on username failed"
+        }
+    }
+    },
+    name:{
+        type: DataTypes.STRING,
         allowNull: false
     },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    disabled: {
+    isDisabled:{
         type: DataTypes.BOOLEAN,
-        allowNull: false,
         defaultValue: false
     }
-}, {
-    sequelize,
-    underscored: true,
-    timestamps: true,
-    modelName: 'user'
-});
+},
+    {
+        sequelize,
+        timestamps: true,
+        modelName: 'user'
+    }
+);
 
 export default User;
