@@ -4,7 +4,7 @@ import {connectToDb} from './src/utils/db.js';
 import config from './src/utils/config.js';
 import blogRouter from './src/routes/blog.router.js';
 import userRouter from './src/routes/user.router.js';
-import loginRouter from './src/routes/login.router.js';
+import authRouter from './src/routes/auth.router.js';
 import authorRouter from './src/routes/author.router.js';
 import readingListRouter from './src/routes/reading.list.router.js';
 const app = express();
@@ -14,7 +14,7 @@ app.use(express.json());
 // import routes
 app.use('/api/blogs',blogRouter);
 app.use('/api/users',userRouter);
-app.use('/api/login',loginRouter);
+app.use('/api/auth',authRouter);
 app.use('/api/authors',authorRouter);
 app.use('/api/readinglists',readingListRouter);
 

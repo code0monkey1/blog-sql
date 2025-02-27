@@ -23,5 +23,6 @@ User.hasMany(Session);
 
 export {
     Blog,
-    User
+    User,
+    Session
 }

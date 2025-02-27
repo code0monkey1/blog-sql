@@ -8,7 +8,7 @@ const route = Router();
 
 route.post('/',tokenExtractor,blogController.postBlog);
 
-route.get('/',blogController.getAllBlogs);
+route.get('/', blogController.getAllBlogs);
 
 route.get('/:id',blogExtractor, blogController.getBlogById);
 
