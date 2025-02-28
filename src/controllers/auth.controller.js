@@ -17,8 +17,7 @@ const login=async(req,res,next)=>{
             
             const tokenInfo = {
                 id: user.id,
-                username: user.username,
-                tokenId: uuidv4()
+                username: user.username
             };
 
             // do not let disabled users login
@@ -42,7 +41,8 @@ const login=async(req,res,next)=>{
 
 const logout=async(req,res,next)=>{
     try{
-        await Session.destroy({ where: { token: req.token } });
+        console.log("🚀 ~ logout ~ req.decodedToken:", req.decodedToken)
+        await Session.destroy({ where: { userId: req.decodedToken.id} });
         res.status(204).end();
     }catch(e){
         next(e);
